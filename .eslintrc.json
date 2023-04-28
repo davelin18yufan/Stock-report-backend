@@ -1,0 +1,10 @@
+// ESLint defaults to ES5 syntax-checking. You'll want to override to the latest well-supported version of JavaScript.
+{
+    "parserOptions": {
+        "ecmaVersion": "latest"
+    },
+
+    "env": {
+        "es6": true
+    }
+}

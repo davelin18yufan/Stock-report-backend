@@ -1,0 +1,3 @@
+/node_modules/*
+/tests/*
+# 指定不需要被 eslint 檢查各式的檔案路徑
