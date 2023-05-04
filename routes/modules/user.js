@@ -5,6 +5,6 @@ const upload = require('../../middleware/multer')
 
 router.get('/:id/posts', userController.getUserPosts)
 router.get('/:id', userController.getUserInfo)
-router.put('/:id', upload.single('image'), userController.editUser)
+router.put('/:id', upload.fields([{ name: 'Avatar', maxCount: 1 }]), userController.editUser)
 
 module.exports = router

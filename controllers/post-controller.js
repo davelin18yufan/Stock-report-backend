@@ -1,5 +1,6 @@
 const { Post, User } = require('../models')
 const { getUser } = require('../_helpers')
+const imgurFileHandler = require('../helpers/file-helpers')
 
 const postController = {
   getPosts: (req, res, next) => {
@@ -35,14 +36,21 @@ const postController = {
       })
       .catch(err => next(err))
   },
-  post: (req, res, next) => {
-    const { title, post, image } = req.body
+  post: async (req, res, next) => {
+    const { title, post } = req.body
+    if (!title || title.trim().length === 0) throw new Error('標題不可空白')
     if (!post || post.trim().length === 0) throw new Error('內容不可空白')
-    if (post.length > 140) throw new Error('字數超過140')
+    if (title.length > 20) throw new Error('標題超過字數上限20')
+    if (post.length > 140) throw new Error('內容超過字數上限140')
+    const { Image } = req.files || {}
+    const [imageFilePath] = await Promise.all([
+      Image ? imgurFileHandler(Image[0]) : null
+    ])
+
     Post.create({
       title,
       post,
-      image: image || 'https://loremflickr.com/320/320/headshot/?random=61.1109824400514',
+      image: imageFilePath,
       userId: getUser(req) ? getUser(req).id : req.user.id
     }
     )
