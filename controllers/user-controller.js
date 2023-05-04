@@ -58,9 +58,6 @@ const userController = {
   },
   getUserInfo: (req, res, next) => {
     User.findByPk(req.params.id, {
-      include: {
-        model: Post
-      },
       nest: true,
       raw: true
     })
@@ -71,6 +68,27 @@ const userController = {
         return res.json({
           status: 'success',
           data: user
+        })
+      })
+      .catch(err => next(err))
+  },
+  getUserPosts: (req, res, next) => {
+    const userId = req.params.id
+    Post.findAll({
+      where: { userId },
+      include: {
+        model: User,
+        attributes: ['id', 'name', 'email', 'avatar']
+      },
+      order: [['createdAt', 'DESC']],
+      raw: true,
+      nest: true
+    })
+      .then(posts => {
+        if (!posts) throw new Error('無符合貼文！')
+        return res.json({
+          status: 'success',
+          data: posts
         })
       })
       .catch(err => next(err))
