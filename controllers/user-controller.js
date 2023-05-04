@@ -1,5 +1,5 @@
 const bcrypt = require('bcryptjs')
-const { User } = require('../models')
+const { User, Post } = require('../models')
 const { getUser } = require('../_helpers')
 const imgurFileHandler = require('../helpers/file-helpers')
 const jwt = require('jsonwebtoken')
@@ -58,6 +58,9 @@ const userController = {
   },
   getUserInfo: (req, res, next) => {
     User.findByPk(req.params.id, {
+      include: {
+        model: Post
+      },
       nest: true,
       raw: true
     })
@@ -78,11 +81,11 @@ const userController = {
       const currentUser = getUser(req)
       // 檢查點擊的使用者
       if (Number(userId) !== currentUser.id) throw new Error('無權限修改其他使用者資料')
-      const { name, email, password, checkPassword } = req.body
+      const { name, email, password, passwordCheck } = req.body
       const { Avatar } = req.files || {}
       // 檢查表單欄位
       if (name?.trim().length === 0 || email?.trim().length === 0 || password?.trim().length === 0) throw new Error('還有欄位沒填')
-      if (password !== checkPassword) throw new Error('密碼與確認密碼不一樣!')
+      if (password !== passwordCheck) throw new Error('密碼與確認密碼不一樣!')
       if (name && name.length > 50) throw new Error('暱稱上限50字!')
 
       const [user, userEmail, filePathAvatar] = await Promise.all([
