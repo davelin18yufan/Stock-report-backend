@@ -12,6 +12,12 @@ module.exports = (sequelize, DataTypes) => {
     static associate (models) {
       // 一對多
       Post.belongsTo(models.User, { foreignKey: 'userId' })
+      // 多對多
+      Post.belongsToMany(models.User, {
+        through: models.Favorite,
+        foreignKey: 'postId',
+        as: 'FavoriteUsers'
+      })
     }
   }
   Post.init({

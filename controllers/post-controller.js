@@ -1,4 +1,4 @@
-const { Post, User } = require('../models')
+const { Post, User, Favorite } = require('../models')
 const { getUser } = require('../_helpers')
 const imgurFileHandler = require('../helpers/file-helpers')
 
@@ -58,6 +58,48 @@ const postController = {
         status: 'success',
         data: newPost
       }))
+      .catch(err => next(err))
+  },
+  favoritePost: (req, res, next) => {
+    Promise.all([
+      Post.findByPk(req.params.id),
+      Favorite.findOne({
+        where: {
+          userId: req.user.id,
+          postId: req.params.id
+        }
+      })
+    ])
+      .then(([post, favorite]) => {
+        if (!post) throw new Error('此貼文不存在')
+        if (favorite) throw new Error('你已經收藏過此篇貼文！')
+
+        return Favorite.create({
+          userId: req.user.id,
+          postId: req.params.id
+        })
+      })
+      .then(result => res.json({
+        status: 'success',
+        data: result
+      }))
+      .catch(err => next(err))
+  },
+  removeFavoritePost: (req, res, next) => {
+    return Favorite.findOne({
+      where: {
+        userId: req.user.id,
+        postId: req.params.id
+      }
+    })
+      .then(favorite => {
+        if (!favorite) throw new Error('並未收藏此貼文..')
+        favorite.destroy()
+        return res.json({
+          status: 'success',
+          data: favorite
+        })
+      })
       .catch(err => next(err))
   }
 }
