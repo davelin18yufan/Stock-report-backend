@@ -1,4 +1,4 @@
-const { Stock } = require('../models')
+const { Stock, Report } = require('../models')
 
 const stockController = {
   getAllStocks: (req, res, next) => {
@@ -15,9 +15,16 @@ const stockController = {
   },
   getStock: (req, res, next) => {
     Stock.findByPk(req.params.id, {
-      // include: {
-      //   model: Report
-      // },
+      include: {
+        model: Report,
+        attributes: {
+          exclude: ['updatedAt']
+        },
+        order: [['publishDate', 'DESC']]
+      },
+      attributes: {
+        exclude: ['createdAt', 'updatedAt']
+      },
       raw: true,
       nest: true
     })

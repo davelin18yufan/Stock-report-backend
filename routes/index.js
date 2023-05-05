@@ -8,6 +8,7 @@ const admin = require('./modules/admin')
 const post = require('./modules/post')
 const user = require('./modules/user')
 const stock = require('./modules/stock')
+const report = require('./modules/report')
 
 router.get('/', (req, res) => {
   res.send('Project init!')
@@ -18,6 +19,7 @@ router.use('/admin', authenticated, authenticatedAdmin, admin)
 router.use('/post', authenticated, authenticatedUser, post)
 router.use('/user', authenticated, authenticatedUser, user)
 router.use('/stock', authenticated, authenticatedUser, stock)
+router.use('/report', authenticated, authenticatedUser, report)
 router.use('/', apiErrorHandler)
 
 module.exports = router
