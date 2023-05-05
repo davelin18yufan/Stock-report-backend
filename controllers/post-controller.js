@@ -52,12 +52,15 @@ const postController = {
       post,
       image: imageFilePath,
       userId: getUser(req) ? getUser(req).id : req.user.id
-    }
-    )
-      .then(newPost => res.json({
-        status: 'success',
-        data: newPost
-      }))
+    })
+      .then(newPost => {
+        return res.json({
+          status: 'success',
+          data: {
+            newPost
+          }
+        })
+      })
       .catch(err => next(err))
   },
   favoritePost: (req, res, next) => {
