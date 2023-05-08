@@ -3,3 +3,4 @@ temp/
 upload/
 .DS_Store
 .env
+stocksList_seed/

@@ -3,6 +3,12 @@ const { Report, Stock } = require('../models')
 const reportController = {
   getAllReports: (req, res, next) => {
     Report.findAll({
+      include: {
+        model: Stock,
+        attributes: {
+          exclude: ['id', 'createdAt', 'updatedAt']
+        }
+      },
       order: [['createdAt', 'DESC']],
       raw: true,
       nest: true

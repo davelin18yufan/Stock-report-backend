@@ -14,7 +14,7 @@ const stockController = {
       .catch(err => next(err))
   },
   getStock: (req, res, next) => {
-    Stock.findByPk(req.params.id, {
+    Stock.findOne({ where: { symbol: req.params.symbol } }, {
       include: {
         model: Report,
         attributes: {
@@ -29,7 +29,7 @@ const stockController = {
       nest: true
     })
       .then(stock => {
-        if (!stock) throw new Error('此股票無資料..')
+        if (!stock) throw new Error('無此股票..')
 
         return res.json({
           status: 'success',
