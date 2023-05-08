@@ -10,6 +10,8 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate (models) {
+      // 一對一
+      Report.belongsTo(models.User, { foreignKey: 'userId' })
       // 一對多
       Report.belongsTo(models.Stock, { foreignKey: 'stockId' })
     }

@@ -15,7 +15,7 @@ const postController = {
       nest: true,
       raw: true
     })
-      .then(posts => res.json({ data: posts }))
+      .then(posts => res.json({ status: 'success', data: posts }))
       .catch(err => next(err))
   },
   getPost: (req, res, next) => {
@@ -56,9 +56,7 @@ const postController = {
       .then(newPost => {
         return res.json({
           status: 'success',
-          data: {
-            newPost
-          }
+          data: newPost
         })
       })
       .catch(err => next(err))

@@ -1,4 +1,5 @@
 const { Report, Stock } = require('../models')
+const { getUser } = require('../_helpers')
 
 const reportController = {
   getAllReports: (req, res, next) => {
@@ -13,11 +14,11 @@ const reportController = {
       raw: true,
       nest: true
     })
-      .then(stocks => {
-        if (!stocks) throw new Error('請求失敗')
+      .then(reports => {
+        if (!reports) throw new Error('請求失敗')
         return res.json({
           status: 'success',
-          data: stocks
+          data: reports
         })
       })
       .catch(err => next(err))
@@ -57,7 +58,8 @@ const reportController = {
           report,
           from,
           publish_date: publishDate,
-          stockId
+          stockId,
+          userId: getUser(req) ? getUser(req).id : req.user.id
         })
       })
       .then(result => res.json({
