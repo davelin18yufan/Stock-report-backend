@@ -4,7 +4,7 @@
     "password": "zQ=g94__KG-J4hO.",
     "database": "report",
     "host": "35.221.194.42",
-    "dialect": "mysql",
+    "dialect": "mysql"
   },
   "test": {
     "username": "root",
@@ -18,6 +18,6 @@
     "password": "zQ=g94__KG-J4hO.",
     "database": "report",
     "host": "35.221.194.42",
-    "dialect": "mysql",
+    "dialect": "mysql"
   }
 }
