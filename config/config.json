@@ -5,7 +5,6 @@
     "database": "report",
     "host": "35.221.194.42",
     "dialect": "mysql",
-    "port": 3000
   },
   "test": {
     "username": "root",
@@ -20,6 +19,5 @@
     "database": "report",
     "host": "35.221.194.42",
     "dialect": "mysql",
-    "port": 3000
   }
 }
