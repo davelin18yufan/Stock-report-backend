@@ -18,6 +18,7 @@
     "password": "zQ=g94__KG-J4hO.",
     "database": "report",
     "host": "35.236.159.81",
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "port": 3000
   }
 }
