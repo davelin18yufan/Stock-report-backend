@@ -3,7 +3,7 @@
     "username": "root",
     "password": "zQ=g94__KG-J4hO.",
     "database": "report",
-    "host": "35.236.159.81",
+    "host": "35.221.194.42",
     "dialect": "mysql",
     "port": 3000
   },
@@ -18,7 +18,7 @@
     "username": "root",
     "password": "zQ=g94__KG-J4hO.",
     "database": "report",
-    "host": "35.236.159.81",
+    "host": "35.221.194.42",
     "dialect": "mysql",
     "port": 3000
   }
