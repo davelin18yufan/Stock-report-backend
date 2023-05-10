@@ -1,10 +1,11 @@
 {
   "development": {
     "username": "root",
-    "password": "password",
+    "password": "zQ=g94__KG-J4hO.",
     "database": "report",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
+    "host": "35.236.159.81",
+    "dialect": "mysql",
+    "port": 3000
   },
   "test": {
     "username": "root",
