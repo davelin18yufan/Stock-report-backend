@@ -44,7 +44,7 @@ const userController = {
       delete user.password
       delete user.isAdmin
       // jwt
-      const token = jwt.sign(user, process.env.JWT_SECRET || 'secret', { expiresIn: '30d' })
+      const token = jwt.sign(user, process.env.JWT_SECRET || 'jwtsecret', { expiresIn: '30d' })
       return res.json({
         status: 'success',
         data: {
