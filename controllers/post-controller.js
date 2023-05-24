@@ -42,9 +42,9 @@ const postController = {
     if (!post || post.trim().length === 0) throw new Error('內容不可空白')
     if (title.length > 20) throw new Error('標題超過字數上限20')
     if (post.length > 140) throw new Error('內容超過字數上限140')
-    const { Image } = req.files || {}
+    const { image } = req.files || {}
     const [imageFilePath] = await Promise.all([
-      Image ? imgurFileHandler(Image[0]) : null
+      image ? imgurFileHandler(image[0]) : null
     ])
 
     Post.create({
