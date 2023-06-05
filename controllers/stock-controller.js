@@ -34,7 +34,7 @@ const stockController = {
       nest: true
     })
       .then(stock => {
-        if (!stock) res.status(404).json({ status: 'error', message: '無此股票..' })
+        if (!stock) return res.status(404).json({ status: 'error', message: '無此股票..' })
         return res.json({
           status: 'success',
           data: stock

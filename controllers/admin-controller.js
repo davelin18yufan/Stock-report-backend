@@ -47,7 +47,7 @@ const adminController = {
   deletePost: (req, res, next) => {
     Post.findOne({ where: { id: req.params.id } })
       .then(post => {
-        if (!post) res.status(404).json({ status: 'error', message: '此貼文不存在' })
+        if (!post) return res.status(404).json({ status: 'error', message: '此貼文不存在' })
         post.destroy()
       })
       .then(result => res.json({
@@ -69,7 +69,7 @@ const adminController = {
       nest: true
     })
       .then(reports => {
-        if (!reports)res.status(404).json({ status: 'error', message: '請求失敗' })
+        if (!reports) return res.status(404).json({ status: 'error', message: '請求失敗' })
         return res.json({
           status: 'success',
           data: reports
@@ -80,7 +80,7 @@ const adminController = {
   deleteReport: (req, res, next) => {
     Report.findOne({ where: { id: req.params.id } })
       .then(report => {
-        if (!report) res.status(404).json({ status: 'error', message: '此報告不存在' })
+        if (!report) return res.status(404).json({ status: 'error', message: '此報告不存在' })
         report.destroy()
       })
       .then(result => res.json({
@@ -92,7 +92,7 @@ const adminController = {
   deleteUser: (req, res, next) => {
     User.findOne({ where: { id: req.params.id } })
       .then(user => {
-        if (!user) res.status(404).json({ status: 'error', message: '此使用者不存在' })
+        if (!user) return res.status(404).json({ status: 'error', message: '此使用者不存在' })
         user.destroy()
       })
       .then(result => res.json({

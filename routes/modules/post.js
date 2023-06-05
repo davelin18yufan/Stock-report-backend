@@ -5,6 +5,7 @@ const upload = require('../../middleware/multer')
 
 router.post('/favorite/:id', postController.favoritePost)
 router.delete('/favorite/:id', postController.removeFavoritePost)
+router.delete('/:id', postController.deletePost)
 router.get('/:id', postController.getPost)
 router.get('', postController.getPosts)
 router.post('', upload.fields([{ name: 'image', maxCount: 1 }]), postController.post)

@@ -28,7 +28,7 @@ const postController = {
       }]
     })
       .then(post => {
-        if (!post) res.status(404).json({ status: 'error', message: '此貼文不存在' })
+        if (!post) return res.status(404).json({ status: 'error', message: '此貼文不存在' })
         return res.json({
           status: 'success',
           data: post
@@ -38,10 +38,10 @@ const postController = {
   },
   post: async (req, res, next) => {
     const { title, post } = req.body
-    if (!title || title.trim().length === 0) res.status(404).json({ status: 'error', message: '標題不可空白' })
-    if (!post || post.trim().length === 0) res.status(404).json({ status: 'error', message: '內容不可空白' })
-    if (title.length > 40) res.status(404).json({ status: 'error', message: '標題超過字數上限40' })
-    if (post.length > 1000) res.status(404).json({ status: 'error', message: '內容超過字數上1000' })
+    if (!title || title.trim().length === 0) return res.status(404).json({ status: 'error', message: '標題不可空白' })
+    if (!post || post.trim().length === 0) return res.status(404).json({ status: 'error', message: '內容不可空白' })
+    if (title.length > 40) return res.status(404).json({ status: 'error', message: '標題超過字數上限40' })
+    if (post.length > 1000) return res.status(404).json({ status: 'error', message: '內容超過字數上1000' })
     const { image } = req.files || {}
     const [imageFilePath] = await Promise.all([
       image ? imgurFileHandler(image[0]) : null
@@ -72,8 +72,8 @@ const postController = {
       })
     ])
       .then(([post, favorite]) => {
-        if (!post) res.status(404).json({ status: 'error', message: '此貼文不存在' })
-        if (favorite) res.status(404).json({ status: 'error', message: '你已經收藏過此篇貼文！' })
+        if (!post) return res.status(404).json({ status: 'error', message: '此貼文不存在' })
+        if (favorite) return res.status(404).json({ status: 'error', message: '你已經收藏過此篇貼文！' })
 
         return Favorite.create({
           userId: req.user.id,
@@ -94,13 +94,26 @@ const postController = {
       }
     })
       .then(favorite => {
-        if (!favorite) res.status(404).json({ status: 'error', message: '並未收藏此貼文..' })
+        if (!favorite) return res.status(404).json({ status: 'error', message: '並未收藏此貼文..' })
         favorite.destroy()
         return res.json({
           status: 'success',
           data: favorite
         })
       })
+      .catch(err => next(err))
+  },
+  deletePost: (req, res, next) => {
+    Post.findOne({ where: { id: req.params.id } })
+      .then(post => {
+        if (!post) return res.status(404).json({ status: 'error', message: '此貼文不存在' })
+        if (req.user.id !== post.user_id) return res.status(404).json({ status: 'error', message: '不可刪除不是您的貼文' })
+        post.destroy()
+      })
+      .then(result => res.json({
+        status: 'success',
+        data: result
+      }))
       .catch(err => next(err))
   }
 }
