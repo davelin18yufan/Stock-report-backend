@@ -15,7 +15,7 @@ const reportController = {
       nest: true
     })
       .then(reports => {
-        if (!reports) throw new Error('請求失敗')
+        if (!reports) res.status(404).json({ status: 'error', message: '請求失敗' })
         return res.json({
           status: 'success',
           data: reports
@@ -35,7 +35,7 @@ const reportController = {
       nest: true
     })
       .then(report => {
-        if (!report) throw new Error('無此報告')
+        if (!report) res.status(404).json({ status: 'error', message: '無此報告' })
         return res.json({
           status: 'success',
           data: report
@@ -46,20 +46,25 @@ const reportController = {
   postReport: (req, res, next) => {
     const { title, from, report, publishDate, stock } = req.body
     // 檢查輸入資料
-    if (!title || !report) throw new Error('標題或內容空白')
-    if (title.length > 50) throw new Error('標題字數超過上限！')
-    if (publishDate.length !== 8) throw new Error('日期格式錯誤')
+    if (!title || !report) res.status(404).json({ status: 'error', message: '標題或內容空白' })
+    if (title.length > 100) res.status(404).json({ status: 'error', message: '標題字數超過上限！' })
+    if (publishDate.length !== 8) res.status(404).json({ status: 'error', message: '日期格式錯誤' })
     // 檢查有沒有輸入股票代號
-    Stock.findOne({ where: { symbol: stock } })
-      .then(stock => {
-        const stockId = stock ? stock.id : null
+    Stock.findOne({ where: { symbol: stock }, raw: true })
+      .then(foundStock => {
+        if (!foundStock) return res.status(404).json({ status: 'error', message: '無此股票代號' })
+        const stockId = foundStock ? foundStock.id : null
+        const stockName = foundStock ? foundStock.name : null
+        console.log(foundStock.name)
         return Report.create({
           title,
           report,
           from,
           publish_date: publishDate,
           stockId,
-          userId: getUser(req) ? getUser(req).id : req.user.id
+          stock_name: stockName,
+          userId: getUser(req) ? getUser(req).id : req.user.id,
+          user_name: getUser(req) ? getUser(req).name : req.user.name
         })
       })
       .then(result => res.json({

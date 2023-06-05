@@ -21,7 +21,9 @@ module.exports = (sequelize, DataTypes) => {
     from: DataTypes.STRING,
     report: DataTypes.TEXT,
     stock_id: DataTypes.INTEGER,
-    publish_date: DataTypes.STRING
+    publish_date: DataTypes.STRING,
+    stock_name: DataTypes.STRING,
+    user_name: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Report',

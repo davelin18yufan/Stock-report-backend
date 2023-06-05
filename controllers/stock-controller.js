@@ -1,4 +1,4 @@
-const { Stock, Report } = require('../models')
+const { Stock, Report, User } = require('../models')
 
 const stockController = {
   getAllStocks: (req, res, next) => {
@@ -14,14 +14,19 @@ const stockController = {
       .catch(err => next(err))
   },
   getStock: (req, res, next) => {
-    Stock.findOne({ where: { symbol: req.params.symbol } }, {
-      include: {
+    Stock.findAll({
+      where: { symbol: req.params.symbol },
+      include: [{
         model: Report,
         attributes: {
           exclude: ['updatedAt']
         },
-        order: [['publishDate', 'DESC']]
-      },
+        order: [['publishDate', 'DESC']],
+        include: [{
+          model: User,
+          attributes: { exclude: ['password', 'isAdmin', 'createdAt', 'updatedAt', 'avatar', 'email'] }
+        }]
+      }],
       attributes: {
         exclude: ['createdAt', 'updatedAt']
       },
@@ -29,8 +34,7 @@ const stockController = {
       nest: true
     })
       .then(stock => {
-        if (!stock) throw new Error('無此股票..')
-
+        if (!stock) res.status(404).json({ status: 'error', message: '無此股票..' })
         return res.json({
           status: 'success',
           data: stock

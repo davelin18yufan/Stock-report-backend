@@ -10,7 +10,7 @@ const passport = require('./config/passport')
 const cors = require('cors')
 
 const app = express()
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 5000
 const SESSION_SECRET = process.env.SESSION_SECRET
 
 app.use(cors())

@@ -18,7 +18,7 @@ passport.use(new LocalStrategy(
       .then(user => {
         if (!user) throw new Error('此信箱不存在！')
         bcrypt.compare(password, user.password).then(isAuth => {
-          if (!isAuth) throw new Error('信箱或密碼錯誤！')
+          if (!isAuth) return cb(null, false, { message: '信箱或密碼錯誤！' })
           return cb(null, user)
         })
       })
