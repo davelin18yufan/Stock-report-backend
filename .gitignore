@@ -3,6 +3,6 @@ temp/
 upload/
 .DS_Store
 .env
+config/config.json
 stocksList_seed/
 API.drawio
-config.json
