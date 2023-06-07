@@ -2,6 +2,7 @@
 This README provides instructions for setting up and running the backend of the Stock-report project.
 
 ## frontend deploy on 
+
 [gh-pages](https://davelin18yufan.github.io/Stock-report-frontend)
 
 ## Prerequisites
@@ -27,7 +28,7 @@ Before getting started, make sure you have the following installed:
 
 4. **Configure the database connection:**
 
-Open the config/config.json file and update the following fields with your database connection details:
+add a config.json under config folder and update the following fields with your database connection details:
 
     "development": {
       "username": "your_database_username",
