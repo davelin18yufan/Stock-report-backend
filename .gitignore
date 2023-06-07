@@ -4,4 +4,4 @@ upload/
 .DS_Store
 .env
 stocksList_seed/
-API.drawio/
+API.drawio
