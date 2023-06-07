@@ -1,23 +1,23 @@
 {
   "development": {
-    "username": "root",
-    "password": "password",
+    "username": ,
+    "password": ,
     "database": "report",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "test": {
-    "username": "root",
-    "password": "password",
+    "username": ,
+    "password": ,
     "database": "database_test",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "production": {
-    "username": "root",
-    "password": "zQ=g94__KG-J4hO.",
-    "database": "report",
-    "host": "35.221.194.42",
+    "username": ,
+    "password": ,
+    "database": ,
+    "host": ,
     "dialect": "mysql"
   }
 }

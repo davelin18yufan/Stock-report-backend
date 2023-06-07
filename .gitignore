@@ -5,3 +5,4 @@ upload/
 .env
 stocksList_seed/
 API.drawio
+config.json

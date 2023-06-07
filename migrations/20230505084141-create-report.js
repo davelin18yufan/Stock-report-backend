@@ -23,6 +23,9 @@ module.exports = {
       stock_id: {
         type: Sequelize.INTEGER
       },
+      stock_name: {
+        type: Sequelize.STRING
+      },
       publish_date: {
         type: Sequelize.INTEGER
       },
