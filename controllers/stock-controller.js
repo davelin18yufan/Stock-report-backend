@@ -22,10 +22,16 @@ const stockController = {
           exclude: ['updatedAt']
         },
         order: [['publishDate', 'DESC']],
-        include: [{
-          model: User,
-          attributes: { exclude: ['password', 'isAdmin', 'createdAt', 'updatedAt', 'avatar', 'email'] }
-        }]
+        include: [
+          {
+            model: User,
+            attributes: { exclude: ['password', 'isAdmin', 'createdAt', 'updatedAt', 'avatar', 'email'] }
+          },
+          {
+            model: Stock,
+            attributes: { exclude: ['createdAt', 'updatedAt'] }
+          }
+        ]
       }],
       attributes: {
         exclude: ['createdAt', 'updatedAt']
