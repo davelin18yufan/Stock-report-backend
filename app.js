@@ -18,7 +18,7 @@ app.use(cors())
 app.use(express.json({ limit: '100mb' }))
 app.use(express.urlencoded({ limit: '100mb', extended: true }))
 
-app.use(session({ secret: SESSION_SECRET || 'secret', resave: false, saveUninitialized: false }))
+app.use(session({ secret: SESSION_SECRET, resave: false, saveUninitialized: false }))
 // passport
 app.use(passport.initialize())
 app.use(passport.session())
