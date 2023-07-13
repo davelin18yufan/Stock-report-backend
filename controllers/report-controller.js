@@ -66,18 +66,32 @@ const reportController = {
     if (title.length > 100) return res.status(404).json({ status: 'error', message: '標題字數超過上限！' })
     if (publishDate.length !== 8) return res.status(404).json({ status: 'error', message: '日期格式錯誤' })
     // 檢查有沒有輸入股票代號
+    if (!stock) {
+      return Report.create({
+        title,
+        report,
+        from,
+        publish_date: publishDate,
+        stockId: null,
+        stock_name: null,
+        userId: getUser(req) ? getUser(req).id : req.user.id
+      })
+        .then(result => res.json({
+          status: 'success',
+          data: result
+        }))
+        .catch(err => next(err))
+    }
     Stock.findOne({ where: { symbol: stock }, raw: true })
       .then(foundStock => {
         if (!foundStock) return res.status(404).json({ status: 'error', message: '無此股票代號' })
-        const stockId = foundStock ? foundStock.id : null
-        const stockName = foundStock ? foundStock.name : null
         return Report.create({
           title,
           report,
           from,
           publish_date: publishDate,
-          stockId,
-          stock_name: stockName,
+          stockId: foundStock.id,
+          stock_name: foundStock.name,
           userId: getUser(req) ? getUser(req).id : req.user.id
         })
       })
