@@ -7,7 +7,8 @@ const adminController = {
       attributes: {
         include: [
           [Sequelize.literal('(SELECT COUNT(*) FROM Posts WHERE Posts.user_id = User.id)'), 'PostsCount'],
-          [Sequelize.literal('(SELECT COUNT(*) FROM Reports WHERE Reports.user_id = User.id)'), 'ReportsCount']
+          [Sequelize.literal('(SELECT COUNT(*) FROM Reports WHERE Reports.user_id = User.id)'), 'ReportsCount'],
+          [Sequelize.literal('(SELECT COUNT(*) FROM Favorites WHERE Favorites.user_id = User.id )'), 'beingFavorite_count']
         ]
       },
       next: true,

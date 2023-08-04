@@ -1,5 +1,5 @@
 const bcrypt = require('bcryptjs')
-const { User, Post, Report, Sequelize } = require('../models')
+const { User, Post, Report, Sequelize, Stock } = require('../models')
 const { getUser } = require('../_helpers')
 const imgurFileHandler = require('../helpers/file-helpers')
 const jwt = require('jsonwebtoken')
@@ -10,7 +10,7 @@ const userController = {
       const { name, email, password } = req.body
       // 檢查使用者輸入
       if (name?.trim().length === 0 || email.trim()?.length === 0 || password?.trim().length === 0) return res.status(404).json({ status: 'error', message: '還有欄位沒填' })
-      if (name && name.length > 50) return res.status(404).json({ status: 'error', message: '暱稱上限50字!' })
+      if (name?.trim().length > 50) return res.status(404).json({ status: 'error', message: '暱稱上限50字!' })
       // 檢查是否重複註冊
       const [userAccount, userEmail] = await Promise.all([
         User.findOne({ where: { name } }),
@@ -40,7 +40,7 @@ const userController = {
   login: async (req, res, next) => {
     try {
       const user = getUser(req).toJSON()
-      if (!user) throw new Error('信箱或密碼錯誤')
+      if (!user) return res.status(404).json({ message: '信箱或密碼錯誤' })
       delete user.password
       delete user.isAdmin
       // jwt
@@ -68,6 +68,7 @@ const userController = {
               exclude: ['password', 'isAdmin', 'createdAt', 'updatedAt']
             }
           },
+          order: [['createdAt', 'DESC']],
           attributes: {
             exclude: ['Favorite', 'createdAt', 'user_id']
           }
@@ -120,6 +121,13 @@ const userController = {
     Report.findAll({
       where: { userId },
       order: [['createdAt', 'DESC']],
+      include: [{
+        model: Stock,
+        attributes: {
+          exclude: ['createdAt', 'updatedAt']
+        }
+      }
+      ],
       raw: true,
       nest: true
     })
@@ -143,7 +151,7 @@ const userController = {
       // 檢查表單欄位
       // if (name?.trim().length === 0 || email?.trim().length === 0 || password?.trim().length === 0) return res.status(404).json({ status: 'error', message: '還有欄位沒填' })
       if (password !== passwordCheck) return res.status(404).json({ status: 'error', message: '密碼與確認密碼不一樣!' })
-      if (name && name.length > 15) return res.status(404).json({ status: 'error', message: '暱稱上限15字!' })
+      if (name?.trim().length > 15) return res.status(404).json({ status: 'error', message: '暱稱上限15字!' })
 
       const [user, userEmail, filePathAvatar] = await Promise.all([
         User.findByPk(userId),
@@ -151,7 +159,7 @@ const userController = {
         avatar ? imgurFileHandler(avatar[0]) : Promise.resolve(null)
       ])
 
-      if (userEmail && userEmail?.toJSON().email === user.email) return res.status(404).json({ status: 'error', message: '信箱已經使用!' })
+      if (userEmail?.toJSON().email === user.email) return res.status(404).json({ status: 'error', message: '信箱已經使用!' })
       const updateUser = await user.update({
         name: name || user.name,
         email: email || user.email,
